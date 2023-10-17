@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, Text, Button, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform } from 'react-native';
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -10,7 +10,7 @@ const Start = ({ navigation }) => {
             source={require('../images/background.png')}
             style={styles.image}
         >
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
         <View style={styles.contentBox}>
         <Text style={{ fontSize: 30 }}>Hello friend!</Text>
         <TextInput
@@ -43,7 +43,10 @@ const Start = ({ navigation }) => {
             <Text style={{fontSize: 15}}>Start chatting</Text>
         </TouchableOpacity>
         </View>
-    </View>
+    </KeyboardAvoidingView>
+    {Platform.OS === "ios" ? (
+        <KeyboardAvoidingView behavior="padding" />
+      ) : null}
     </ImageBackground>
   );
 }
