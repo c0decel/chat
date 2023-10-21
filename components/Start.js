@@ -1,9 +1,26 @@
 import { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform } from 'react-native';
+import { getAuth, signInAnonymously } from 'firebase/auth';
+import { StyleSheet, View, Text, TextInput, Alert, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform } from 'react-native';
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
   const [colorSelection, setColorSelection] = useState('');
+  const auth = getAuth();
+
+  const signInUser = () => {
+    signInAnonymously(auth)
+      .then(result => {
+        const userID = result.user.uid;
+        navigation.navigate('Chat', {
+          name: name,
+          backgroundColor: colorSelection,
+          userID: userID
+        })
+      })
+      .catch((error) => {
+        Alert.alert('Unable to sign in.');
+      })
+  }
 
   return (
     <ImageBackground
@@ -35,17 +52,14 @@ const Start = ({ navigation }) => {
         </View>
         <TouchableOpacity style={{backgroundColor: '#c47dff', padding: 5, borderColor: '#000000', borderWidth: 2, margin: 10, borderRadius: 20}}
             title="Start Chatting"
-            onPress={() => navigation.navigate('Chat', {
-            name: name,
-            backgroundColor: colorSelection,
-            })}
+            onPress={signInUser}
         >
             <Text style={{fontSize: 15}}>Start chatting</Text>
         </TouchableOpacity>
         </View>
     </KeyboardAvoidingView>
-    {Platform.OS === "ios" ? (
-        <KeyboardAvoidingView behavior="padding" />
+    {Platform.OS === 'ios' ? (
+        <KeyboardAvoidingView behavior='padding' />
       ) : null}
     </ImageBackground>
   );
