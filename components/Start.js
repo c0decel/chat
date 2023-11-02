@@ -2,20 +2,26 @@ import { useState } from 'react';
 import { getAuth, signInAnonymously } from 'firebase/auth';
 import { StyleSheet, View, Text, TextInput, Alert, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform } from 'react-native';
 
-const Start = ({ navigation }) => {
+const Start = ({ navigation, isConnected }) => {
   const [name, setName] = useState('');
+  const [status, setStatus] = useState('');
   const [colorSelection, setColorSelection] = useState('');
+  const [bubbleSelection, setBubbleSelection] = useState('');
   const auth = getAuth();
 
   const signInUser = () => {
     signInAnonymously(auth)
       .then(result => {
         const userID = result.user.uid;
-        navigation.navigate('Chat', {
+        
+        navigation.navigate('Contacts', {
           name: name,
           backgroundColor: colorSelection,
-          userID: userID
+          bubbleColor: bubbleSelection,
+          userID: userID,
+          status: status,
         })
+        console.log(userID)
       })
       .catch((error) => {
         Alert.alert('Unable to sign in.');
@@ -35,21 +41,45 @@ const Start = ({ navigation }) => {
             value={name}
             onChangeText={setName}
             placeholder='Type your username here'
+            required
         />
+        <TextInput
+          style={styles.textInput}
+          value={status}
+          onChangeText={setStatus}
+          placeholder='Set status (optional)'
+        />
+
         <Text>Choose background color:</Text>
         <View style={styles.colorContainer}>
-            {['#ffee6e', '#adfbff', '#ffa6f6', '#d7a6ff', '#ccffa6'].map((color, index) => (
+            {['#82ffae', '#9cfffa', '#fff382', '#ff9cc3', '#c980f2'].map((bgColor, index) => (
             <TouchableOpacity
                 key={index}
                 style={[
                 styles.choices,
-                { backgroundColor: color },
-                colorSelection === color && styles.selectedColor,
+                { backgroundColor: bgColor },
+                colorSelection === bgColor && styles.selectedColor,
                 ]}
-                onPress={() => setColorSelection(color)}
+                onPress={() => setColorSelection(bgColor)}
             />
             ))}
         </View>
+
+        <Text>Choose text bubble color:</Text>
+        <View style={styles.colorContainer}>
+            {['#e9c2ff', '#c9fdff', '#fcffa8'].map((bubbleSelection, index) => (
+            <TouchableOpacity
+                key={index}
+                style={[
+                styles.choices,
+                { backgroundColor: bubbleSelection },
+                bubbleSelection === bubbleSelection && styles.bubbleColor,
+                ]}
+                onPress={() => setBubbleSelection(bubbleSelection)}
+            />
+            ))}
+        </View>
+
         <TouchableOpacity style={{backgroundColor: '#c47dff', padding: 5, borderColor: '#000000', borderWidth: 2, margin: 10, borderRadius: 20}}
             title="Start Chatting"
             onPress={signInUser}
@@ -75,13 +105,16 @@ const styles = StyleSheet.create({
     width: 200,
     padding: 15,
     borderWidth: 1,
-    marginTop: 20,
-    marginBottom: 15,
+    marginTop: 10,
+    marginBottom: 5,
     backgroundColor: '#ffffff',
     borderRadius: 20
   },
   selectedColor: {
     borderColor: '#000000',
+  },
+  bubbleColor: {
+    borderColor: '#00000',
   },
   choices: {
     borderRadius: 25,

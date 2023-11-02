@@ -2,12 +2,18 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore'
-import { LogBox } from 'react-native';
+import { getFirestore, disableNetwork, enableNetwork } from 'firebase/firestore'
+import { LogBox, Alert } from 'react-native';
+import { useEffect } from 'react';
+import { useNetInfo } from '@react-native-community/netinfo';
+
 LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
 
 import Start from './components/Start';
 import Chat from './components/Chat';
+import Contacts from './components/Contacts';
+import Bot from './components/Bot';
+import Details from './components/Details';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCqPXwoItsC1Cs6FFZi_LGQKuqqEaqe0JQ",
@@ -28,21 +34,47 @@ const db = getFirestore(app);
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const connectionStatus = useNetInfo();
+
+  useEffect(() => {
+    if (connectionStatus.isConnected === false) {
+      Alert.alert('Connection lost');
+      disableNetwork(db);
+    } else if (connectionStatus.isConnected === true) {
+      enableNetwork(db);
+    }
+  }, [connectionStatus.isConnected]);
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Start"
+        initialRouteName='Start'
       >
         <Stack.Screen
-          name="Start"
+          name='Start'
           component={Start}
         />
         <Stack.Screen
-          name="Chat"
+          name='Contacts'
         >
-          {props => <Chat db={db} {...props} />}
+          {props => <Contacts isConnected={connectionStatus.isConnected} db={db} {...props} />}
         </Stack.Screen>
+        <Stack.Screen
+          name='Chat'
+        >
+          {props => <Chat isConnected={connectionStatus.isConnected} db={db} {...props} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name='Bot'
+        >
+          {props => <Bot isConnected={connectionStatus.isConnected} db={db} {...props} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name='Details'
+          >
+          {props => <Details isConnected={connectionStatus.isConnected} db={db} {...props} />}
+        </Stack.Screen>
+
       </Stack.Navigator>
     </NavigationContainer>
   );
