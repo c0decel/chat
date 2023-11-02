@@ -25,7 +25,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
           newMessages.push({
             id: doc.id,
             ...doc.data(),
-            createdAt: new Date(doc.data().createdAt.toDate()),
+            createdAt: new Date(doc.data().createdAt.toMillis()),
           });
         });
         cachedMessages(newMessages);
