@@ -1,6 +1,6 @@
-import { View, TouchableOpacity, KeyboardAvoidingView, StyleSheet, Image, ImageBackground, Text } from 'react-native';
+import { View, TouchableOpacity, KeyboardAvoidingView, StyleSheet, Image, ImageBackground, Text, Platform } from 'react-native';
 
-const Contacts = ({ route, navigation, db, isConnected }) => {
+const Contacts = ({ route, navigation, isConnected }) => {
     const { name, backgroundColor, userID, bubbleColor, status } = route.params;
 
 //open a chat
@@ -54,20 +54,6 @@ return (
                     style={styles.icon}
                 />
                 <Text style={styles.contact}>Group chat</Text>
-            </TouchableOpacity>
-        </View>
-
-        <View style={styles.contentBox}>
-            <TouchableOpacity
-                title='Bot'
-                onPress={openBot}
-                style={{ flexDirection: 'row', alignItems: 'center' }}
-            >
-                <Image
-                    source={require('../icons/bot.png')}
-                    style={styles.icon}
-                />
-                <Text style={styles.contact}>Bot chat</Text>
             </TouchableOpacity>
         </View>
     </>
