@@ -2,10 +2,7 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { initializeApp } from 'firebase/app';
-<<<<<<< HEAD
 import { getStorage } from 'firebase/storage';
-=======
->>>>>>> 0c4e2a842d5b86e823559b3003deed301a35ddbe
 import { getFirestore, disableNetwork, enableNetwork } from 'firebase/firestore'
 import { LogBox, Alert } from 'react-native';
 import { useEffect } from 'react';
@@ -16,24 +13,9 @@ LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
 import Start from './components/Start';
 import Chat from './components/Chat';
 import Contacts from './components/Contacts';
-<<<<<<< HEAD
 // import Bot from './components/Bot';
 import Details from './components/Details';
 import { firebaseConfig } from './env';
-=======
-import Bot from './components/Bot';
-import Details from './components/Details';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCqPXwoItsC1Cs6FFZi_LGQKuqqEaqe0JQ",
-  authDomain: "chat-dbe08.firebaseapp.com",
-  projectId: "chat-dbe08",
-  storageBucket: "chat-dbe08.appspot.com",
-  messagingSenderId: "378836921744",
-  appId: "1:378836921744:web:d3bc4223829c7ec57e9715",
-  measurementId: "G-RWBTB4CG08"
-};
->>>>>>> 0c4e2a842d5b86e823559b3003deed301a35ddbe
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -70,48 +52,31 @@ export default function App() {
         <Stack.Screen
           name='Contacts'
         >
-<<<<<<< HEAD
           {props => <Contacts
             isConnected={connectionStatus.isConnected}
             db={db}
             storage={storage}
             {...props}
           />}
-=======
-          {props => <Contacts isConnected={connectionStatus.isConnected} db={db} {...props} />}
->>>>>>> 0c4e2a842d5b86e823559b3003deed301a35ddbe
         </Stack.Screen>
         <Stack.Screen
           name='Chat'
         >
-<<<<<<< HEAD
           {props => <Chat
             isConnected={connectionStatus.isConnected} 
             db={db}
             storage={storage}
             {...props}
           />}
-=======
-          {props => <Chat isConnected={connectionStatus.isConnected} db={db} {...props} />}
-        </Stack.Screen>
-        <Stack.Screen
-          name='Bot'
-        >
-          {props => <Bot isConnected={connectionStatus.isConnected} db={db} {...props} />}
->>>>>>> 0c4e2a842d5b86e823559b3003deed301a35ddbe
         </Stack.Screen>
         <Stack.Screen
           name='Details'
           >
-<<<<<<< HEAD
           {props => <Details
             isConnected={connectionStatus.isConnected}
             db={db}
             {...props}
           />}
-=======
-          {props => <Details isConnected={connectionStatus.isConnected} db={db} {...props} />}
->>>>>>> 0c4e2a842d5b86e823559b3003deed301a35ddbe
         </Stack.Screen>
 
       </Stack.Navigator>
